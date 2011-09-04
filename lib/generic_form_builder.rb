@@ -8,7 +8,8 @@ class GenericFormBuilder < ActionView::Helpers::FormBuilder
     email_field
     file_field
   ].each do |method|
-    define_method(method.to_sym) do |field, options, *args|
+    define_method(method.to_sym) do |field, *args|
+      options, *args = args
       options ||= {:label => field.to_s.humanize}
       note   = content_tag(:span, options[:note], :class => 'note') if options[:note]
       button = ' '+content_tag(:button, content_tag(:span, options[:button])) if options[:button]
