@@ -14,7 +14,7 @@ class GenericFormBuilder < ActionView::Helpers::FormBuilder
       note   = content_tag(:span, options[:note], :class => 'note') if options[:note]
       button = ' '+content_tag(:button, content_tag(:span, options[:button])) if options[:button]
       errors = ' '+@object.errors[field].join(' and ') if @object.errors[field].any?
-      content_tag(:p, label(field, "#{options[:label]}#{errors}") + note + super(field, *args) + button.html_safe)
+      content_tag(:p, label(field, "#{options[:label]}#{errors}") + note + super(field, *args) + button.try(:html_safe))
     end
   end
 
