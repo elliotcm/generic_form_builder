@@ -35,8 +35,11 @@ class GenericFormBuilder < ActionView::Helpers::FormBuilder
     content_tag(:div, buttons, :class => 'actions')
   end
 
+protected
+
   def errors_text(field)
-    @object.errors[field].empty? ? "" : @object.errors[field]
+    return '' if @object.errors[field].empty?
+    @object.errors[field]
   end
-  private :errors_text
+
 end
