@@ -20,12 +20,12 @@ class GenericFormBuilder < ActionView::Helpers::FormBuilder
 
   def collection_select(field, collection, value_method, name_method, options = {})
     label_text = options[:label] || field.to_s.humanize
-    content_tag(:p, label(field, "#{label_text} #{@object.errors[field]}") + super(field, collection, value_method, name_method))
+    content_tag(:p, label(field, "#{label_text} #{errors_text(field)}") + super(field, collection, value_method, name_method))
   end
 
   def check_box(field, options = {})
     label_text = options[:label] || field.to_s.humanize
-    content_tag(:p, label(field, super + " #{label_text} #{@object.errors[field]}", :class => 'checkbox'))
+    content_tag(:p, label(field, super + " #{label_text} #{errors_text(field)}", :class => 'checkbox'))
   end
 
   def buttons(options = {})
@@ -35,4 +35,8 @@ class GenericFormBuilder < ActionView::Helpers::FormBuilder
     content_tag(:div, buttons, :class => 'actions')
   end
 
+  def errors_text(field)
+    @object.errors[field].empty? ? "" : @object.errors[field]
+  end
+  private :errors_text
 end
