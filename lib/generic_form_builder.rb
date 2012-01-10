@@ -28,6 +28,11 @@ class GenericFormBuilder < ActionView::Helpers::FormBuilder
     content_tag(:p, label(field, super + " #{label_text} #{errors_text(field)}", :class => 'checkbox'))
   end
 
+  def radio_button(field, value, options = {})
+    label_text = options.delete(:label) || field.to_s.humanize
+    content_tag(:p, label(field, super + " #{label_text} #{errors_text(field)}"))
+  end
+
   def buttons(options = {})
     buttons  = content_tag(:button, content_tag(:span, options[:submit_text] || 'Save'), :type => 'submit')
     buttons << link_to('Cancel', options[:cancel_link], :class => 'cancel button') if options[:cancel_link]
