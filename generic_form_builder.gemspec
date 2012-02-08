@@ -1,7 +1,7 @@
 # -*- encoding: utf-8 -*-
 Gem::Specification.new do |s|
   s.name          = "generic_form_builder"
-  s.version       = '0.1.2'
+  s.version       = '0.2.0'
   s.platform      = Gem::Platform::RUBY
   s.authors       = ["Elliot Crosby-McCullough", "George Brocklehurst", "Elise Huard", "Tom Stuart"]
   s.email         = ["elliot.cm@gmail.com"]

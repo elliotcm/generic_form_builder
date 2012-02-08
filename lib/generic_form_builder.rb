@@ -35,7 +35,8 @@ class GenericFormBuilder < ActionView::Helpers::FormBuilder
 
   def radio_button(field, value, options = {})
     label_text = options.delete(:label) || field.to_s.humanize
-    content_tag(:p, label(field, super + " #{label_text} #{errors_text(field)}"))
+    options[:tag_type] ||= :li
+    content_tag(options[:tag_type], label(field, super + " #{label_text} #{errors_text(field)}"))
   end
 
   def buttons(options = {})
