@@ -1,7 +1,7 @@
 Generic form builder
 ====================
 
-You like.  Use it and stuff.
+You like, use it.  And stuff.
 
 Instead of the normal one.
 
