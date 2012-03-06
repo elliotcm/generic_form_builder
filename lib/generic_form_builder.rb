@@ -18,12 +18,12 @@ class GenericFormBuilder < ActionView::Helpers::FormBuilder
     end
   end
 
-  def select(field, collection, options = {})
+  def select(field, collection, options = {}, html_options = {})
     label_text = options[:label] || field.to_s.humanize
     content_tag(:p, label(field, "#{label_text} #{errors_text(field)}") + super)
   end
 
-  def collection_select(field, collection, value_method, name_method, options = {})
+  def collection_select(field, collection, value_method, name_method, options = {}, html_options = {})
     label_text = options[:label] || field.to_s.humanize
     content_tag(:p, label(field, "#{label_text} #{errors_text(field)}") + super(field, collection, value_method, name_method))
   end
