@@ -11,6 +11,7 @@ class GenericFormBuilder < ActionView::Helpers::FormBuilder
   ].each do |method|
     define_method(method.to_sym) do |field, *args|
       options, *args = args
+      return super(field, *args) if options && options[:default_builder]
       options ||= {:label => field.to_s.humanize}
       note   = content_tag(:span, options[:note], :class => 'note') if options[:note]
       button = ' '+content_tag(:button, content_tag(:span, options[:button])) if options[:button]
@@ -20,21 +21,25 @@ class GenericFormBuilder < ActionView::Helpers::FormBuilder
   end
 
   def select(field, collection, options = {}, html_options = {})
+    return super if options[:default_builder]
     label_text = options[:label] || field.to_s.humanize
     content_tag(:p, label(field, "#{label_text} #{errors_text(field)}") + super)
   end
 
   def collection_select(field, collection, value_method, name_method, options = {}, html_options = {})
+    return super(field, collection, value_method, name_method) if options[:default_builder]
     label_text = options[:label] || field.to_s.humanize
     content_tag(:p, label(field, "#{label_text} #{errors_text(field)}") + super(field, collection, value_method, name_method))
   end
 
   def check_box(field, options = {})
+    return super if options[:default_builder]
     label_text = options[:label] || field.to_s.humanize
     content_tag(:p, label(field, super + " #{label_text} #{errors_text(field)}", :class => 'checkbox'))
   end
 
   def radio_button(field, value, options = {})
+    return super if options[:default_builder]
     label_text = options.delete(:label) || field.to_s.humanize
     options[:tag_type] ||= :li
     content_tag(options[:tag_type], label(field, super + " #{label_text} #{errors_text(field)}"))
