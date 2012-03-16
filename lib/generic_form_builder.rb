@@ -12,7 +12,7 @@ class GenericFormBuilder < ActionView::Helpers::FormBuilder
     define_method(method.to_sym) do |field, *args|
       options, *args = args
       return super(field, *args) if options && options[:default_builder]
-      options ||= {:label => field.to_s.humanize}
+      options = {:label => field.to_s.humanize}.merge(options || {}) # label is overwritten if exists, otherwise not
       note   = content_tag(:span, options[:note], :class => 'note') if options[:note]
       button = ' '+content_tag(:button, content_tag(:span, options[:button])) if options[:button]
       errors = ' '+@object.errors[field].join(' and ') if @object.errors[field].any?
