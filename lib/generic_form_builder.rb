@@ -42,7 +42,7 @@ class GenericFormBuilder < ActionView::Helpers::FormBuilder
     return super if options[:default_builder]
     label_text = options.delete(:label) || field.to_s.humanize
     tag_type = options.delete(:tag_type) || :li
-    content_tag(tag_type, label("#{field}_#{value.to_s.downcase.gsub(' ', '_')}", super + " #{label_text} #{errors_text(field)}"))
+    content_tag(tag_type, label("#{field}_#{value.to_s.downcase.gsub(' ', '_')}", super + " #{label_text} #{errors_text(field)}", :class => 'radio'))
   end
 
   def buttons(options = {})
