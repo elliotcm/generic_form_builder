@@ -23,13 +23,15 @@ class GenericFormBuilder < ActionView::Helpers::FormBuilder
   def select(field, collection, options = {}, html_options = {})
     return super if options[:default_builder]
     label_text = options[:label] || field.to_s.humanize
-    content_tag(:p, label(field, "#{label_text} #{errors_text(field)}") + super)
+    note       = content_tag(:span, options[:note], :class => 'note') if options[:note]
+    content_tag(:p, label(field, "#{label_text} #{errors_text(field)}") + note + super)
   end
 
   def collection_select(field, collection, value_method, name_method, options = {}, html_options = {})
     return super(field, collection, value_method, name_method) if options[:default_builder]
     label_text = options[:label] || field.to_s.humanize
-    content_tag(:p, label(field, "#{label_text} #{errors_text(field)}") + super(field, collection, value_method, name_method))
+    note       = content_tag(:span, options[:note], :class => 'note') if options[:note]
+    content_tag(:p, label(field, "#{label_text} #{errors_text(field)}") + note + super(field, collection, value_method, name_method))
   end
 
   def check_box(field, options = {})
