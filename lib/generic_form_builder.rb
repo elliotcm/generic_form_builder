@@ -13,7 +13,7 @@ class GenericFormBuilder < ActionView::Helpers::FormBuilder
       options, *args = args
       options ||= {}
       return super(field, *args) if options[:default_builder]
-      note   = content_tag(:span, options[:note], :class => 'note') if options[:note]
+      note   = content_tag(:span, options[:note], :class => 'note', :escape=>false) if options[:note]
       button = ' '+content_tag(:button, content_tag(:span, options[:button])) if options[:button]
       errors = ' '+errors_text(field) if any_errors?(field)
       content_tag(:p, label(field, "#{options[:label] || field.to_s.humanize}#{errors}") + note + super(field, options, *args) + button.try(:html_safe))
@@ -23,14 +23,14 @@ class GenericFormBuilder < ActionView::Helpers::FormBuilder
   def select(field, collection, options = {}, html_options = {})
     return super if options[:default_builder]
     label_text = options[:label] || field.to_s.humanize
-    note       = content_tag(:span, options[:note], :class => 'note') if options[:note]
+    note       = content_tag(:span, options[:note], :class => 'note', :escape=>false) if options[:note]
     content_tag(:p, label(field, "#{label_text} #{errors_text(field)}") + note + super)
   end
 
   def collection_select(field, collection, value_method, name_method, options = {}, html_options = {})
     return super(field, collection, value_method, name_method) if options[:default_builder]
     label_text = options[:label] || field.to_s.humanize
-    note       = content_tag(:span, options[:note], :class => 'note') if options[:note]
+    note       = content_tag(:span, options[:note], :class => 'note', :escape=>false) if options[:note]
     content_tag(:p, label(field, "#{label_text} #{errors_text(field)}") + note + super(field, collection, value_method, name_method))
   end
 
