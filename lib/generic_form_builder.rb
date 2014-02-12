@@ -15,7 +15,7 @@ class GenericFormBuilder < ActionView::Helpers::FormBuilder
       return super(field, *args) if options[:default_builder]
       note   = content_tag(:span, options[:note], :class => 'note') if options[:note]
       button = ' '+content_tag(:button, content_tag(:span, options[:button])) if options[:button]
-      errors = ' '+@object.errors[field].join(' and ') if @object.errors[field].any?
+      errors = ' '+errors_text(field) if any_errors?(field)
       content_tag(:p, label(field, "#{options[:label] || field.to_s.humanize}#{errors}") + note + super(field, options, *args) + button.try(:html_safe))
     end
   end
@@ -55,6 +55,10 @@ class GenericFormBuilder < ActionView::Helpers::FormBuilder
   end
 
 protected
+
+  def any_errors?(field)
+    @object and @object.errors and @object.errors[field] and @object.errors[field].any?
+  end
 
   def errors_text(field)
     return '' if @object.errors[field].empty?
