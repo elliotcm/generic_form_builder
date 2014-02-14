@@ -68,7 +68,7 @@ protected
   end
 
   def errors_text(field)
-    return '' if @object.errors[field].empty?
+    return '' unless any_errors?(field)
     @object.errors[field].join(' and ')
   end
 
