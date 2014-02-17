@@ -19,11 +19,11 @@ class GenericFormBuilder < ActionView::Helpers::FormBuilder
       html_options = {}
 
       if any_errors?(field)
-        errors = ' '+errors_text(field)
+        errors = ' '+content_tag(:span, errors_text(field), :class => "error")
         html_options.merge!('class' => 'errors')
       end
 
-      content_tag(:p, label(field, "#{options[:label] || field.to_s.humanize}#{errors}") + note + super(field, options, *args) + button.try(:html_safe), html_options)
+      content_tag(:p, label(field, "#{options[:label] || field.to_s.humanize}#{errors}".try(:html_safe)) + note + super(field, options, *args) + button.try(:html_safe), html_options)
     end
   end
 
