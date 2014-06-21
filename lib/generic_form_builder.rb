@@ -8,6 +8,7 @@ class GenericFormBuilder < ActionView::Helpers::FormBuilder
     email_field
     file_field
     number_field
+    date_field
   ].each do |method|
     define_method(method.to_sym) do |field, *args|
       options, *args = args
