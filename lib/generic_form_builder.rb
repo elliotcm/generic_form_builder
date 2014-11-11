@@ -45,7 +45,8 @@ class GenericFormBuilder < ActionView::Helpers::FormBuilder
   def check_box(field, options = {})
     return super if options[:default_builder]
     label_text = options[:label] || field.to_s.humanize
-    content_tag(:p, label(field, super + " #{label_text} #{errors_text(field)}", :class => 'checkbox'))
+    note       = note_html(options[:note])
+    content_tag(:p, label(field, super + " #{label_text} #{errors_text(field)}" + note, :class => 'checkbox'))
   end
 
   def radio_button(field, value, options = {})
