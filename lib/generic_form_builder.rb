@@ -75,18 +75,16 @@ protected
   end
 
   def note_html(note)
-    if note
-      if note.is_a?(Hash)
-        note_text = note.fetch(:text)
-        options = note.except(:text)
-      else
-        note_text = note
-      end
+    return unless note
 
-      content_tag(:span, note_text, :class => (options[:class] || 'note'))
+    if note.is_a?(Hash)
+      note_text = note.fetch(:text)
+      options = note.except(:text)
     else
-      ""
+      note_text = note
     end
+
+    content_tag(:span, note_text, :class => (options[:class] || 'note'))
   end
 
 end
