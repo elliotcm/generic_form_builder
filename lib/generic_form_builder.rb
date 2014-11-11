@@ -14,7 +14,7 @@ class GenericFormBuilder < ActionView::Helpers::FormBuilder
       options, *args = args
       options ||= {}
       return super(field, *args) if options[:default_builder]
-      note   = content_tag(:span, options[:note], :class => 'note') if options[:note]
+      note   = note_html(options[:note])
       button = ' '+content_tag(:button, content_tag(:span, options[:button])) if options[:button]
 
       html_options = {}
@@ -31,21 +31,22 @@ class GenericFormBuilder < ActionView::Helpers::FormBuilder
   def select(field, collection, options = {}, html_options = {})
     return super if options[:default_builder]
     label_text = options[:label] || field.to_s.humanize
-    note       = content_tag(:span, options[:note], :class => 'note') if options[:note]
+    note       = note_html(options[:note])
     content_tag(:p, label(field, "#{label_text} #{errors_text(field)}") + note + super)
   end
 
   def collection_select(field, collection, value_method, name_method, options = {}, html_options = {})
     return super(field, collection, value_method, name_method) if options[:default_builder]
     label_text = options[:label] || field.to_s.humanize
-    note       = content_tag(:span, options[:note], :class => 'note') if options[:note]
+    note       = note_html(options[:note])
     content_tag(:p, label(field, "#{label_text} #{errors_text(field)}") + note + super(field, collection, value_method, name_method))
   end
 
   def check_box(field, options = {})
     return super if options[:default_builder]
     label_text = options[:label] || field.to_s.humanize
-    content_tag(:p, label(field, super + " #{label_text} #{errors_text(field)}", :class => 'checkbox'))
+    note       = note_html(options[:note])
+    content_tag(:p, label(field, super + " #{label_text} #{errors_text(field)}" + note, :class => 'checkbox'))
   end
 
   def radio_button(field, value, options = {})
@@ -71,6 +72,21 @@ protected
   def errors_text(field)
     return '' unless any_errors?(field)
     @object.errors[field].join(' and ')
+  end
+
+  def note_html(note)
+    if note
+      if note.is_a?(Hash)
+        note_text = note.fetch(:text)
+        options = note.except(:text)
+      else
+        note_text = note
+      end
+
+      content_tag(:span, note_text, :class => (options[:class] || 'note'))
+    else
+      ""
+    end
   end
 
 end
