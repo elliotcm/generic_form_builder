@@ -1,7 +1,7 @@
 class GenericFormBuilder < ActionView::Helpers::FormBuilder
   include ActionView::Helpers::TagHelper, ActionView::Helpers::UrlHelper
 
-  %w[
+  STANDARD_FIELDS = %w[
     text_field
     password_field
     text_area
@@ -9,7 +9,9 @@ class GenericFormBuilder < ActionView::Helpers::FormBuilder
     file_field
     number_field
     date_field
-  ].each do |method|
+  ].freeze
+
+  STANDARD_FIELDS.each do |method|
     define_method(method.to_sym) do |field, *args|
       options, *args = args
       options ||= {}
@@ -17,13 +19,18 @@ class GenericFormBuilder < ActionView::Helpers::FormBuilder
       note   = note_html(options[:note])
       button = ' '+content_tag(:button, content_tag(:span, options[:button])) if options[:button]
 
-      html_options = {}
+      wrapper_html_options = options.delete(:wrapper_html_options) || {}
 
       if any_errors?(field)
-        html_options.merge!('class' => 'errors')
+        wrapper_html_options.merge!('class' => 'errors')
       end
 
-      content_tag(:p, label(field, "#{options[:label] || field.to_s.humanize} #{errors_text(field)}".try(:html_safe)) + note + super(field, options, *args) + button.try(:html_safe), html_options)
+      content_tag(:p,
+        label(field, "#{options[:label] || field.to_s.humanize} #{errors_text(field)}".try(:html_safe)) +
+        note +
+        super(field, options, *args) +
+        button.try(:html_safe),
+      wrapper_html_options)
     end
   end
 
@@ -60,10 +67,19 @@ class GenericFormBuilder < ActionView::Helpers::FormBuilder
   end
 
   def buttons(options = {})
-    buttons  = content_tag(:button, content_tag(:span, options[:submit_text] || 'Save'), :type => 'submit')
-    buttons << link_to('Cancel', options[:cancel_link], :class => 'cancel button') if options[:cancel_link]
+    options = {
+      cancel_class: ["cancel", "button"],
+      wrapper_class: ["actions"]
+    }.merge(options)
 
-    content_tag(:div, buttons, :class => 'actions')
+    buttons  = content_tag(:button,
+                  content_tag(:span, options[:submit_text] || 'Save'),
+                  type: 'submit',
+                  class: options[:button_class]
+                )
+    buttons << link_to('Cancel', options[:cancel_link], class: options[:cancel_class]) if options[:cancel_link]
+
+    content_tag(:div, buttons, class: options[:wrapper_class])
   end
 
 protected
