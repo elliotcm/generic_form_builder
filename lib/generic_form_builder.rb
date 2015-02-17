@@ -38,7 +38,7 @@ class GenericFormBuilder < ActionView::Helpers::FormBuilder
     return super if options[:default_builder]
     label_text = options[:label] || field.to_s.humanize
     note       = note_html(options[:note])
-    p_html_options = {}
+    p_html_options = options.delete(:wrapper_html_options) || {}
     if any_errors?(field)
       p_html_options.merge!('class' => 'errors')
     end
