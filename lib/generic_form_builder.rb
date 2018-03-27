@@ -53,7 +53,18 @@ class GenericFormBuilder < ActionView::Helpers::FormBuilder
   end
 
   def check_box(field, options = {})
-    return super if options[:default_builder]
+    if options[:default_builder]
+      object_name = options.fetch(:object_name)
+      method = options.fetch(:method)
+      checked_value = options.fetch(:checked_value) { "1" }
+      unchecked_value = options.fetch(:unchecked_value) { "0" }
+
+      %i(default_builder object_name method checked_value unchecked_value).each do |option|
+        options.delete(option)
+      end
+
+      return super(object_name, method, options = {}, checked_value = "1", unchecked_value = "0")
+    end
     label_text = options[:label] || field.to_s.humanize
     note       = note_html(options[:note])
     content_tag(:p, label(field, super + " #{label_text} #{errors_text(field)}".try(:html_safe) + note, :class => 'checkbox'))
