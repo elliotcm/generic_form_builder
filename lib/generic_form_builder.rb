@@ -103,7 +103,6 @@ protected
       note_text = note
     end
 
-    content_tag(:span, note_text, :class => (options[:class] || 'note'))
+    content_tag(:span, note_text, :class => (options&[:class] || 'note'))
   end
-
 end
