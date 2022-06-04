@@ -1,3 +1,5 @@
+Important!  This gem has long gone stagnant and is not actively maintained.  Use at your own risk!
+
 # Generic form builder
 
 You like, use it.  And stuff.
